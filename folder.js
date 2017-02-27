@@ -532,6 +532,7 @@ function left() {
         console.log(($(this).attr('class').replace("left", '')));
         var myclick = +($(this).attr('class').replace("left", ''));
 
+
         if(myclick!=currentFolder) {
         //    folderStack.push(currentFolder);
         }
