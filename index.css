@@ -1,0 +1,74 @@
+body {
+    margin: 0px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.top {
+    background-color: gray;
+    padding: 4px;
+}
+
+.views {
+    display: flex;
+    flex-direction: row;
+}
+
+.left_view {
+    flex-basis: 40%;
+    background-color: white;
+    padding: 4px;
+}
+
+.right_view {
+    background-color: white;
+    padding: 4px;
+}
+
+.right_view [class^="right"] {
+    margin: 9px;
+    display: inline-block;
+}
+
+.custom-menu,
+.custom-menu2 {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+}
+
+ul.custom-menu,
+ul.custom-menu2 {
+    padding: 1px;
+    list-style: none;
+}
+
+.custom-menu li,
+.custom-menu2 li {
+    padding: 2px 2px;
+    cursor: pointer;
+}
+
+.custom-menu li:hover,
+.custom-menu2 li:hover {
+    background-color: #DEF;
+}
+
+button {
+    margin: 2px 2px;
+    padding: 2px 2px;
+}
+
+.path {
+    width: 400px;
+}
