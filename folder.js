@@ -525,7 +525,47 @@ function left() {
     };
 
 
-    
+
+
+    $('.left_view [class^="left"]').click(function(event) {
+        event.stopPropagation();
+        console.log(($(this).attr('class').replace("left", '')));
+        var myclick = +($(this).attr('class').replace("left", ''));
+
+        if(myclick!=currentFolder) {
+        //    folderStack.push(currentFolder);
+        }
+       // FileOrFolder(myclick, fsStorage);
+
+            currentFolder = +($(this).attr('class').replace("left", ''));
+            left();
+            right(currentFolder);
+
+
+
+
+    });
+
+
+    $('.left_view [class^="left"] img').click(function(event) {
+        event.stopPropagation();
+        // var number =
+        var close_icon = './images/closed_dirs.jpg';
+        var open_icon = './images/open_dirs.jpg';
+        var changed = 0;
+        if ($(this).attr('src') == close_icon && changed == 0) {
+
+            $(this).attr('src', open_icon);
+            changed = 1;
+        }
+        if ($(this).attr('src') == open_icon && changed == 0) {
+            $(this).attr('src', close_icon);
+            changed = 1;
+        }
+        changed = 0;
+        $(this).parent().children('ul').toggle(200);
+    });
+
 
 
 
