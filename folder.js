@@ -81,12 +81,16 @@ Folder = (function () {
            if(this.children[i].id==myId) {
          //      console.log(typeof(this.children));
                this.children.splice(i, 1);
+
+
            }
        }
     };
 
     Folder.prototype.addChild = function (item) {
         this.children.push(item);
+
+
     };
 
     Folder.prototype.findChild = function (myId) {
@@ -100,6 +104,8 @@ Folder = (function () {
 
     Folder.prototype.rename = function (newName) {
         this.name=newName;
+        buildFlatArray();
+
     };
 
 
@@ -157,13 +163,16 @@ FileSystem = (function () {
                 return false;
             }
         }
-        var newFolder = new Folder(this.lastId++, name);
+        var newFolder = new Folder(this.lastId, name);
         folder.addChild(newFolder);
+        buildFlatArray();
+
+        this.lastId++;
         return newFolder;
     };
 
     FileSystem.prototype.addFile=function (name,parentId,content) {
-        var newFile = new File(this.lastId++,name,content);
+        var newFile = new File(this.lastId,name,content);
       //  console.log(newFile);
         var folder=this.getItem(parentId);
         for(var i=0;i<folder.children.length;i++) {
@@ -173,10 +182,47 @@ FileSystem = (function () {
         }
 
         folder.addChild(newFile);
+        buildFlatArray();
+
+        this.lastId++;
         return newFile;
      //   console.log(folder);
 
     };
+
+
+
+    FileSystem.prototype.addFolderWithId = function (name, parentId,myId) {
+        var folder = this.getItem(parentId);
+        for(var i=0;i<folder.children.length;i++) {
+            if (folder.children[i].name==name){
+                return false;
+            }
+        }
+        var newFolder = new Folder(myId, name);
+        folder.addChild(newFolder);
+        this.lastId++;
+        return newFolder;
+    };
+
+    FileSystem.prototype.addFileWithid=function (name,parentId,content,myId) {
+        var newFile = new File(myId,name,content);
+        //  console.log(newFile);
+        var folder=this.getItem(parentId);
+        for(var i=0;i<folder.children.length;i++) {
+            if (folder.children[i].name==name){
+                return false;
+            }
+        }
+
+        folder.addChild(newFile);
+        this.lastId++;
+        return newFile;
+        //   console.log(folder);
+
+    };
+
+
 
 
 
@@ -186,7 +232,9 @@ FileSystem = (function () {
       var item = this.getItem(id);
 
         item.rename(newName);
-     //   console.log(item);
+        buildFlatArray();
+
+        //   console.log(item);
 
 
 
@@ -207,6 +255,8 @@ FileSystem = (function () {
         var item=this.getItem(parentId);
     //    console.log(item);
         item.deleteChild(id);
+        buildFlatArray();
+
     };
 
 
@@ -284,17 +334,6 @@ History = (function () {
 
 
 var Fs=new FileSystem();
-Fs.addFolder("sub1",0);
-Fs.addFolder("sub2",0);
-Fs.addFile("file1.txt",1,"test");
-Fs.addFolder("sub3",0);
-Fs.addFolder("sub5",1);
-Fs.addFolder("sub10",5);
-Fs.addFolder("sub8",5);
-Fs.addFile("file11.txt",0,"hgjghj");
-
-
-
 
 $('.views').on("contextmenu", function(event) {
 
@@ -317,10 +356,112 @@ $(document).on("mousedown", function(e) {
     }
 });
 
+
+if (localStorage.getItem("oldstorage")) {
+    reBuildTree();
+} else {
+    Fs.addFolder("sub1",0);
+    Fs.addFolder("sub2",0);
+    Fs.addFile("file1.txt",1,"test");
+    Fs.addFolder("sub3",0);
+    Fs.addFolder("sub5",1);
+    Fs.addFolder("sub10",5);
+    Fs.addFolder("sub8",5);
+    Fs.addFile("file11.txt",0,"hgjghj");
+}
+
+
 right(0);//****************************************************************
 left();//******************************************************************
 drawNav();
 minimizeAll();
+
+
+
+
+
+function reBuildTree() {
+    var newArray = JSON.parse(localStorage.getItem("oldstorage").toString());
+    if (newArray.length<2) {
+        return;
+    }
+    for (var i=1;i<newArray.length;i++){
+        if(newArray[i].content){
+            //add file
+            Fs.addFileWithid(newArray[i].name,newArray[i].parent,newArray[i].content,newArray[i].id);
+        }
+        else {
+            Fs.addFolderWithId(newArray[i].name,newArray[i].parent,newArray[i].id);
+        }
+
+    }
+};
+
+
+
+function buildFlatArray() {
+    var folderStack = [];
+        folderStack[0] = 0;
+    var newArray = [{"id":0,"name":"root","parent":null}];
+    var oldCurrentFolder = currentFolder;
+    currentFolder = 0;
+    buildArray(newArray,Fs.root.children);
+    localStorage.setItem("oldstorage", JSON.stringify(newArray));
+    currentFolder=oldCurrentFolder;
+
+    function buildArray(newArray, oldArray) {
+        for (var i = 0; i < oldArray.length; i++) {
+            if (oldArray[i].id == currentFolder) {
+                newArray.push({
+                    "id": oldArray[i].id,
+                    "name": oldArray[i].name,
+                    "parent": null
+                });
+            }
+            else {
+                if (!oldArray[i].content) {
+                    newArray.push({
+                        "id": oldArray[i].id,
+                        "name": oldArray[i].name,
+                        "parent": currentFolder
+                    });
+                }
+                else
+                    newArray.push({
+                        "id": oldArray[i].id,
+                        "name": oldArray[i].name,
+                        "parent": currentFolder,
+                        "content": oldArray[i].content
+                    });
+            }
+            //    console.log(oldArray[i].name);
+            if (oldArray[i].children) {
+                folderStack.push(currentFolder);
+                currentFolder = oldArray[i].id;
+                buildArray(newArray, oldArray[i].children);
+                currentFolder = folderStack.pop();
+            } //else return;
+        }
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -340,6 +481,7 @@ $(".custom-menu li").click(function() {
                 //buildFlatArray();
                 //drawLeft();
                 //drawRight();
+                buildFlatArray();
                 left();
                 right(currentFolder);
             }
@@ -353,6 +495,8 @@ $(".custom-menu li").click(function() {
                 //buildFlatArray();
                 //drawLeft();
                 //drawRight();
+                buildFlatArray();
+
                 left();
                 right(currentFolder);
             }
