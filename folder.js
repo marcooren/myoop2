@@ -320,6 +320,7 @@ $(document).on("mousedown", function(e) {
 right(0);//****************************************************************
 left();//******************************************************************
 drawNav();
+minimizeAll();
 
 
 
@@ -668,3 +669,13 @@ function drawNav() {
         main();
     });
 }
+
+
+function minimizeAll(){
+    $('.left0').children('ul').children('ul').children('ul').children('ul').toggle();
+    $('.left0').children('ul').children('ul').children('ul').toggle();
+    $('.left0').children('ul').children('ul').toggle();
+    $('.left0').children('ul').toggle();
+}
+
+
