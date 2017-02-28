@@ -887,7 +887,11 @@ while(dir!=-1)
 
     var pathString='';
 
-    return path;
+   for(var i=path.length-1;i>=0;i--){
+       pathString+=Fs.getItem(path[i]).name+'\\';
+   }
+
+    return pathString;
 
     //Fs.getItem(currentFolder).name
 
