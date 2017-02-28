@@ -134,6 +134,8 @@ FileSystem = (function () {
         this.root = new Folder(this.lastId++, 'root');
     };
 
+
+
     var findById = function (item, id) {
         if (item.id == id) {
             return item;
@@ -147,6 +149,10 @@ FileSystem = (function () {
             }
         }
     };
+
+    FileSystem.prototype.setLastId=function (id){
+        this.lastId=id;
+    }
 
     FileSystem.prototype.getItem = function (id) {
         if (!id) {
@@ -389,9 +395,15 @@ function reBuildTree() {
         if(newArray[i].content){
             //add file
             Fs.addFileWithid(newArray[i].name,newArray[i].parent,newArray[i].content,newArray[i].id);
+            if(Fs.lastId<newArray[i].id) {
+                Fs.setLastId(newArray[i].id + 1);
+            }
         }
         else {
             Fs.addFolderWithId(newArray[i].name,newArray[i].parent,newArray[i].id);
+            if(Fs.lastId<newArray[i].id) {
+                Fs.setLastId(newArray[i].id + 1);
+            }
         }
 
     }
@@ -747,7 +759,11 @@ function openFile(myId) {
         event.stopPropagation();
         found = 0;
      //   setContentOfFile(($('.file_text').val()), myId, myArray);
-        Fs.getItem(myId).setContent($('.file_text').val());
+        console.log($('.file_text').val());
+        var temp=Fs.getItem(myId)
+            temp.setContent($('.file_text').val());
+           buildFlatArray();
+
     });
 
     $('.cancel').click(function(event) {
