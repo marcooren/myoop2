@@ -832,6 +832,9 @@ function drawNav() {
         event.stopPropagation();
         var temp=Hi.goBack();
         console.log(temp);
+        if(!Fs.getItem(temp)){
+            return;
+        }
         if (temp==-1){
             return;
         }
@@ -846,6 +849,9 @@ function drawNav() {
         event.stopPropagation();
         var temp=Hi.goForward();
         console.log(temp);
+        if(!Fs.getItem(temp)){
+            return;
+        }
         if (temp==-1){
             return;
         }
