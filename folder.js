@@ -243,15 +243,6 @@ FileSystem = (function () {
         //   console.log(item);
 
 
-
-
-
-
-
-
-
-
-
     };
 
 
@@ -268,6 +259,9 @@ FileSystem = (function () {
 
     FileSystem.prototype.returnParentId = function (item,id) {
 
+           if(id==0) {
+               return -1
+           }
            if(item.children)
                 for (var i=0;i<item.children.length;i++) {
                     if (item.children[i].id==id){
@@ -592,7 +586,7 @@ function right(id) {
             //    console.log(Fs.getItem(id).children[i].name);
             }
         }
-        $('.path').val(Fs.getItem(currentFolder).name);
+        $('.path').val(getPath());
     }
 
 
@@ -873,3 +867,30 @@ function minimizeAll(){
 }
 
 
+function getPath(){
+    var path=[];
+    var dir=currentFolder;
+    if (currentFolder==0)
+        path.push(0);
+while(dir!=-1)
+    {
+        var temp = Fs.returnParentId(Fs.root, dir);
+        if(temp!=-1) {
+        path.push(dir);
+        }
+        if(temp==0){
+            path.push(0);
+        }
+            dir=temp;
+    }
+
+
+    var pathString='';
+
+    return path;
+
+    //Fs.getItem(currentFolder).name
+
+
+
+}
