@@ -835,6 +835,7 @@ function drawNav() {
         if (temp==-1){
             return;
         }
+        Hi.addToForward(currentFolder);
         currentFolder=temp;
       right(currentFolder);
       //  left();
@@ -843,13 +844,16 @@ function drawNav() {
 
     $('.forward').click(function(event) {
         event.stopPropagation();
-
-
-        if (forwardFolderStack.length > 0) {
-            folderStack.push(currentFolder);
-            currentFolder = forwardFolderStack.pop();
+        var temp=Hi.goForward();
+        console.log(temp);
+        if (temp==-1){
+            return;
         }
-        main();
+        Hi.addToBack(currentFolder);
+        currentFolder=temp;
+        right(currentFolder);
+        //  left();
+
     });
 }
 
