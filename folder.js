@@ -592,6 +592,7 @@ function right(id) {
             //    console.log(Fs.getItem(id).children[i].name);
             }
         }
+        $('.path').val(Fs.getItem(currentFolder).name);
     }
 
 
@@ -801,7 +802,7 @@ function openFile(myId) {
 
 function drawNav() {
     var nav_menu = '<div class="main_menu"></div><button class="back">Back</button>' +
-        '<button class="forward">Forward</button>Location:<input type="text" class="path" name="path" value="' + "basepath" + '"><button class="goto">Goto</button></div>';
+        '<button class="forward">Forward</button>Location:<input type="text" class="path" name="path" value="' + "root" + '"><button class="goto">Goto</button></div>';
     $('.top').empty();
     //console.log(currentFolder);
     $('.top').html(nav_menu);
