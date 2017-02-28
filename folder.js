@@ -310,12 +310,19 @@ History = (function () {
     };
 
     History.prototype.goBack= function () {
+        if (this.back.length==0) {
+            return -1;
+        }
         return this.back.pop();
 
 
     };
 
     History.prototype.goForward= function () {
+        if (this.forward.length==0){
+            return -1;
+        }
+
         return this.forward.pop();
 
     };
@@ -324,6 +331,19 @@ History = (function () {
         this.back.push(id);
 
     };
+
+    History.prototype.addToBack=function (id){
+        this.back.push(id);
+
+    };
+
+    History.prototype.addToForward=function(id){
+        this.forward.push(id);
+
+    };
+
+
+
 
 
 
@@ -340,6 +360,7 @@ History = (function () {
 
 
 var Fs=new FileSystem();
+var Hi=new History();
 
 $('.views').on("contextmenu", function(event) {
 
@@ -583,6 +604,7 @@ function right(id) {
         console.log(myClick);
 
         if(Fs.getItem(myClick).getType()=='folder') {
+            Hi.addToBack(currentFolder);
             currentFolder = +($(this).attr('class').replace("right", ''));
             right(currentFolder);
         }
@@ -695,7 +717,7 @@ function left() {
         //    folderStack.push(currentFolder);
         }
        // FileOrFolder(myclick, fsStorage);
-
+            Hi.addToBack(currentFolder);
             currentFolder = +($(this).attr('class').replace("left", ''));
             left();
             right(currentFolder);
@@ -808,13 +830,14 @@ function drawNav() {
 
     $('.back').click(function(event) {
         event.stopPropagation();
-        if (folderStack.length > 0) {
-            forwardFolderStack.push(currentFolder);
-            currentFolder = folderStack.pop();
+        var temp=Hi.goBack();
+        console.log(temp);
+        if (temp==-1){
+            return;
         }
-
-        //  console.log("back to :" + currentFolder);
-        main();
+        currentFolder=temp;
+      right(currentFolder);
+      //  left();
 
     });
 
