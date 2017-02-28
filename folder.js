@@ -319,6 +319,7 @@ $(document).on("mousedown", function(e) {
 
 right(0);//****************************************************************
 left();//******************************************************************
+drawNav();
 
 
 
@@ -589,12 +590,6 @@ function left() {
 
 
 
-
-
-
-
-
-
 function openFile(myId) {
     var myContent = '';
     //findContentOfFile(myId, myArray);
@@ -617,4 +612,59 @@ function openFile(myId) {
        right(currentFolder);
     });
     return;
+}
+
+
+
+function drawNav() {
+    var nav_menu = '<div class="main_menu"></div><button class="back">Back</button>' +
+        '<button class="forward">Forward</button>Location:<input type="text" class="path" name="path" value="' + "basepath" + '"><button class="goto">Goto</button></div>';
+    $('.top').empty();
+    //console.log(currentFolder);
+    $('.top').html(nav_menu);
+
+    // $('.path').val(currentFolder);
+    $('.goto').click(function(event){
+        event.stopPropagation();
+        var test=$('.path').val();
+        var newPath=test.split(',');
+        console.log(newPath);
+        (function check_path(mypath){
+            lastId=-1
+            passOn2(fsStorage,newPath,0);
+            console.log("last id: "+lastId);
+            if(lastId!=-1) {
+                folderStack.push(currentFolder);
+                currentFolder = lastId;
+                drawRight();
+                drawLeft();
+            }
+
+        }(newPath));
+
+
+    });
+
+    $('.back').click(function(event) {
+        event.stopPropagation();
+        if (folderStack.length > 0) {
+            forwardFolderStack.push(currentFolder);
+            currentFolder = folderStack.pop();
+        }
+
+        //  console.log("back to :" + currentFolder);
+        main();
+
+    });
+
+    $('.forward').click(function(event) {
+        event.stopPropagation();
+
+
+        if (forwardFolderStack.length > 0) {
+            folderStack.push(currentFolder);
+            currentFolder = forwardFolderStack.pop();
+        }
+        main();
+    });
 }
