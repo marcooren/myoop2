@@ -150,6 +150,10 @@ FileSystem = (function () {
         }
     };
 
+
+
+
+
     FileSystem.prototype.setLastId=function (id){
         this.lastId=id;
     }
@@ -478,21 +482,6 @@ function buildFlatArray() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $(".custom-menu li").click(function() {
 
     switch ($(this).attr("data-action")) {
@@ -533,28 +522,6 @@ $(".custom-menu li").click(function() {
 
     $(".custom-menu").hide(100);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -756,14 +723,6 @@ function left() {
 
 
 
-
-
-
-
-
-
-
-
 function openFile(myId) {
     var myContent = '';
     //findContentOfFile(myId, myArray);
@@ -805,17 +764,59 @@ function drawNav() {
     $('.goto').click(function(event){
         event.stopPropagation();
         var test=$('.path').val();
-        var newPath=test.split(',');
+        var newPath=test.split('\\');
+        if(newPath[newPath.length-1]=='')
+            newPath.splice(newPath.length-1,1);
         console.log(newPath);
+        // (function check_path(mypath){
+        //     if (mypath.length) {
+        //         if (mypath[0]!='root') {
+        //             alert("no such path");
+        //             return false;
+        //         }
+        //         if(mypath.length>=2){
+        //             var temp=checkPath(mypath,Fs.root)
+        //             if (temp=-1) {
+        //                 currentFolder = temp;
+        //                 right(currentFolder);
+        //             }
+        //         }
+        //     }
+        // }(newPath));
+
         (function check_path(mypath){
-            lastId=-1
-            passOn2(fsStorage,newPath,0);
+            var lastId=-1
+            passOn2(Fs.root.children,mypath,0);
+
+
+            function passOn2(myArray, myparent,x) {
+                if(myparent.length<=x) {
+                    return;
+                }
+                for (var i = 0; i < myArray.length; i++) {
+                    if(myArray[i].name==myparent[x+1]){
+                        if(myArray[i].children) {
+                            console.log(myArray[i].id);
+                            if (x+2==myparent.length) {
+                                lastId=myArray[i].id;
+                            }
+                            passOn2(myArray[i].children, myparent, x + 1);
+                        }
+                    }
+                }
+
+            }
+
+
+
+
+
             console.log("last id: "+lastId);
             if(lastId!=-1) {
-                folderStack.push(currentFolder);
+             //   folderStack.push(currentFolder);
                 currentFolder = lastId;
-                drawRight();
-                drawLeft();
+               right(currentFolder);
+              //  drawLeft();
             }
 
         }(newPath));
