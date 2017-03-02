@@ -767,6 +767,10 @@ function drawNav() {
         var newPath=test.split('\\');
         if(newPath[newPath.length-1]=='')
             newPath.splice(newPath.length-1,1);
+        if(newPath.length==1 && newPath[0]=='root'){
+            currentFolder=0;
+            right(currentFolder);
+        }
         console.log(newPath);
         // (function check_path(mypath){
         //     if (mypath.length) {
@@ -812,10 +816,12 @@ function drawNav() {
 
 
             console.log("last id: "+lastId);
+
             if(lastId!=-1) {
              //   folderStack.push(currentFolder);
                 currentFolder = lastId;
                right(currentFolder);
+               return;
               //  drawLeft();
             }
 
