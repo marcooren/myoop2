@@ -1,36 +1,51 @@
 body {
     margin: 0px;
+    word-wrap: break-word;
 }
 
 .main {
     display: flex;
     flex-direction: column;
+    word-wrap: break-word;
 }
 
 .top {
     background-color: gray;
     padding: 4px;
+    word-wrap: break-word;
 }
 
 .views {
     display: flex;
     flex-direction: row;
+    word-wrap: break-word;
+
 }
 
 .left_view {
     flex-basis: 40%;
     background-color: white;
     padding: 4px;
+    word-wrap:break-word;
+
 }
 
 .right_view {
+    display: flex;
+
     background-color: white;
     padding: 4px;
+    word-wrap: break-word;
+    align-self: flex-start;
+
+
 }
 
 .right_view [class^="right"] {
     margin: 9px;
     display: inline-block;
+    word-wrap: break-word;
+    max-width: 80px;
 }
 
 .custom-menu,
@@ -45,30 +60,41 @@ body {
     background: #FFF;
     color: #333;
     border-radius: 5px;
+    word-wrap: break-word;
 }
 
 ul.custom-menu,
 ul.custom-menu2 {
     padding: 1px;
     list-style: none;
+    word-wrap: break-word;
 }
 
 .custom-menu li,
 .custom-menu2 li {
     padding: 2px 2px;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .custom-menu li:hover,
 .custom-menu2 li:hover {
     background-color: #DEF;
+    word-wrap: break-word;
 }
 
 button {
     margin: 2px 2px;
     padding: 2px 2px;
+    word-wrap: break-word;
 }
 
 .path {
     width: 400px;
+    word-wrap: break-word;
+}
+
+.left_view [class^="left"] {
+  word-wrap: break-word;
+    width:100px;
 }
