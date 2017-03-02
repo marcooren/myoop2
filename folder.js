@@ -768,6 +768,7 @@ function drawNav() {
         if(newPath[newPath.length-1]=='')
             newPath.splice(newPath.length-1,1);
         if(newPath.length==1 && newPath[0]=='root'){
+            Hi.addToBack(currentFolder);
             currentFolder=0;
             right(currentFolder);
         }
@@ -819,6 +820,7 @@ function drawNav() {
 
             if(lastId!=-1) {
              //   folderStack.push(currentFolder);
+                Hi.addToBack(currentFolder);
                 currentFolder = lastId;
                right(currentFolder);
                return;
