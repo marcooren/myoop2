@@ -1,135 +1,3 @@
-/**
- * Created by marco on 22/02/2017.
- */
-
-
-var currentFolder=0;
-var oldClick='';
-
-
-
-
-Folder = (function () {
-    'use strict';
-
-    function Folder(id, name) {
-        this.id = id;
-        this.name = name;
-        this.children = [];
-    };
-
-    Folder.prototype.getType = function () {
-        return 'folder';
-    };
-
-    Folder.prototype.getId = function () {
-        return this.id;
-    };
-
-
-    Folder.prototype.getChildren = function () {
-        return this.children;
-    };
-
-    Folder.prototype.deleteChild = function (myId) {
-        if(this.children)
-       for(var i=0;i<this.children.length;i++){
-           if(this.children[i].id==myId) {
-         //      console.log(typeof(this.children));
-               this.children.splice(i, 1);
-
-
-           }
-       }
-    };
-
-    Folder.prototype.addChild = function (item) {
-        this.children.push(item);
-
-
-    };
-
-    Folder.prototype.findChild = function (myId) {
-        for(var i=0;i<this.children.length;i++){
-            if(this.children[i].id==myId) {
-                return this.children[i];
-            }
-        }
-    };
-
-
-    Folder.prototype.rename = function (newName) {
-        this.name=newName;
-        buildFlatArray();
-
-    };
-
-
-
-    return Folder;
-})();
-
-
-
-
-//
-// constructor(id, name) //*******************************************
-// deleteChild(id)//***********************************
-// rename(newName)  //***********************************
-// addChild(Folder | File)//******************************
-// findChild(id)//*************************************
-// getChildren() //****************************************
-// getId()   //****************************************************
-// getType() //******************************************************
-
-
-
-
-
-var Fs=new FileSystem();
-var Hi=new History();
-
-$('.views').on("contextmenu", function(event) {
-
-    event.preventDefault();
-
-
-
-    $(".custom-menu").finish().toggle(100).
-
-    css({
-        top: event.pageY + "px",
-        left: event.pageX + "px"
-    });
-});
-
-$(document).on("mousedown", function(e) {
-
-    if (!$(e.target).parents(".custom-menu").length > 0) {
-        $(".custom-menu").hide(100);
-    }
-});
-
-
-if (localStorage.getItem("oldstorage")) {
-    reBuildTree();
-} else {
-    Fs.addFolder("sub1",0);
-    Fs.addFolder("sub2",0);
-    Fs.addFile("file1.txt",1,"test");
-    Fs.addFolder("sub3",0);
-    Fs.addFolder("sub5",1);
-    Fs.addFolder("sub10",5);
-    Fs.addFolder("sub8",5);
-    Fs.addFile("file11.txt",0,"hgjghj");
-}
-
-
-right(0);//****************************************************************
-left();//******************************************************************
-drawNav();
-minimizeAll();
-
 
 
 
@@ -161,7 +29,7 @@ function reBuildTree() {
 
 function buildFlatArray() {
     var folderStack = [];
-        folderStack[0] = 0;
+    folderStack[0] = 0;
     var newArray = [{"id":0,"name":"root","parent":null}];
     var oldCurrentFolder = currentFolder;
     currentFolder = 0;
@@ -230,7 +98,7 @@ $(".custom-menu li").click(function() {
                 left();
                 right(currentFolder);
             }
-                break;
+            break;
 
         case "2":
             var fileName = prompt("Enter a file name to create", "newfile.txt"+Fs.lastId++);
@@ -279,7 +147,7 @@ function right(id) {
                     $('.right_view').append('<div class="right' + Fs.getItem(id).children[i].id + '"><img src="./images/file.jpg"></br><center>' + Fs.getItem(id).children[i].name + '</center></div>');
 
                 }
-            //    console.log(Fs.getItem(id).children[i].name);
+                //    console.log(Fs.getItem(id).children[i].name);
             }
         }
         $('.path').val(getPath());
@@ -299,9 +167,9 @@ function right(id) {
             currentFolder = +($(this).attr('class').replace("right", ''));
             right(currentFolder);
         }
-         if(Fs.getItem(myClick).getType()=='file') {
-             openFile(myClick);
-         }
+        if(Fs.getItem(myClick).getType()=='file') {
+            openFile(myClick);
+        }
 
 
     });
@@ -336,7 +204,7 @@ function right(id) {
             // A case for each action. Your actions here
             case "1":
                 //   console.log(this);
-              Fs.deleteItem(oldClick);
+                Fs.deleteItem(oldClick);
                 left();
                 right(currentFolder);
                 //drawLeft();
@@ -346,12 +214,12 @@ function right(id) {
                 var folderName = prompt("Enter new name to rename to: ");
                 if (folderName !== null && folderName !== '')
                     if(Fs.rename(oldClick,folderName)) {
-                //    alert("there is already a file or folder in current dir with that name");
-                   // break;
-                }
+                        //    alert("there is already a file or folder in current dir with that name");
+                        // break;
+                    }
 
-                    left()
-                    right(currentFolder);
+                left()
+                right(currentFolder);
 
                 break;
         }
@@ -384,7 +252,7 @@ function left() {
         if (Fs.getItem(id).children) {
             for (var i = 0; i < Fs.getItem(id).children.length; i++) {
                 if (Fs.getItem(id).children[i].getType() == 'folder') {
-                  //  console.log(Fs.getItem(id).children[i].name);
+                    //  console.log(Fs.getItem(id).children[i].name);
                     $(parent).append('<ul class="left' + Fs.getItem(id).children[i].id + '"><img src="./images/closed_dirs.jpg">' + Fs.getItem(id).children[i].name + '</ul>');
                     if (Fs.getItem(id).children[i].children) {
                         print_left(Fs.getItem(id).children[i].id,'.left'+Fs.getItem(id).children[i].id);
@@ -405,13 +273,13 @@ function left() {
 
 
         if(myclick!=currentFolder) {
-        //    folderStack.push(currentFolder);
+            //    folderStack.push(currentFolder);
         }
-       // FileOrFolder(myclick, fsStorage);
-            Hi.addToBack(currentFolder);
-            currentFolder = +($(this).attr('class').replace("left", ''));
-            left();
-            right(currentFolder);
+        // FileOrFolder(myclick, fsStorage);
+        Hi.addToBack(currentFolder);
+        currentFolder = +($(this).attr('class').replace("left", ''));
+        left();
+        right(currentFolder);
 
 
 
@@ -463,11 +331,11 @@ function openFile(myId) {
     $('.save').click(function(event) {
         event.stopPropagation();
         found = 0;
-     //   setContentOfFile(($('.file_text').val()), myId, myArray);
+        //   setContentOfFile(($('.file_text').val()), myId, myArray);
         console.log($('.file_text').val());
         var temp=Fs.getItem(myId)
-            temp.setContent($('.file_text').val());
-           buildFlatArray();
+        temp.setContent($('.file_text').val());
+        buildFlatArray();
 
     });
 
@@ -475,7 +343,7 @@ function openFile(myId) {
         event.stopPropagation();
         // drawLeft();
         // drawRight();
-       right(currentFolder);
+        right(currentFolder);
     });
     return;
 }
@@ -548,12 +416,12 @@ function drawNav() {
             console.log("last id: "+lastId);
 
             if(lastId!=-1) {
-             //   folderStack.push(currentFolder);
+                //   folderStack.push(currentFolder);
                 Hi.addToBack(currentFolder);
                 currentFolder = lastId;
-               right(currentFolder);
-               return;
-              //  drawLeft();
+                right(currentFolder);
+                return;
+                //  drawLeft();
             }
 
         }(newPath));
@@ -573,8 +441,8 @@ function drawNav() {
         }
         Hi.addToForward(currentFolder);
         currentFolder=temp;
-      right(currentFolder);
-      //  left();
+        right(currentFolder);
+        //  left();
 
     });
 
@@ -610,24 +478,24 @@ function getPath(){
     var dir=currentFolder;
     if (currentFolder==0)
         path.push(0);
-while(dir!=-1)
+    while(dir!=-1)
     {
         var temp = Fs.returnParentId(Fs.root, dir);
         if(temp!=-1) {
-        path.push(dir);
+            path.push(dir);
         }
         if(temp==0){
             path.push(0);
         }
-            dir=temp;
+        dir=temp;
     }
 
 
     var pathString='';
 
-   for(var i=path.length-1;i>=0;i--){
-       pathString+=Fs.getItem(path[i]).name+'\\';
-   }
+    for(var i=path.length-1;i>=0;i--){
+        pathString+=Fs.getItem(path[i]).name+'\\';
+    }
 
     return pathString;
 
