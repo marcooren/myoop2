@@ -55,8 +55,6 @@ function minimizeAll(){
 }
 
 
-
-
 function right(id) {
 
     $('.right_view').html('');

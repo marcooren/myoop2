@@ -1,7 +1,5 @@
 
 
-
-
 function reBuildTree() {
     var newArray = JSON.parse(localStorage.getItem("oldstorage").toString());
     if (newArray.length<2) {
@@ -24,7 +22,6 @@ function reBuildTree() {
 
     }
 };
-
 
 
 function buildFlatArray() {
@@ -74,8 +71,6 @@ function buildFlatArray() {
 
 
 }
-
-
 
 
 
