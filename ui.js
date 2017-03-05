@@ -47,6 +47,13 @@ $(".custom-menu li").click(function() {
 
 
 
+function minimizeAll(){
+    $('.left0').children('ul').children('ul').children('ul').children('ul').toggle();
+    $('.left0').children('ul').children('ul').children('ul').toggle();
+    $('.left0').children('ul').children('ul').toggle();
+    $('.left0').children('ul').toggle();
+}
+
 
 
 
